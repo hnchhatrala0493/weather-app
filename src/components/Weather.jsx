@@ -39,18 +39,32 @@ const Weather = () => {
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&unites=metric&appid=${import.meta.env.VITE_API_KEY}`;
       const response = await fetch(url);
       const data = await response.json();
+      // const sunRiseTime = data.sys.sunrise;
+      // const sunSetTime = data.sys.sunset;
+      // const sunRiseDate = new Date(sunRiseTime * 1000);
+      // const subSetDate = new Date(sunSetTime * 1000);
+      // const istOffset = 5.5 * 60 * 60 * 1000;
+      // const sunRise = new Date(sunRiseDate.getTime() + istOffset);
+      // const sunSet = new Date(subSetDate.getTime() + istOffset);
       if(!response.ok){
         alert(data.message);
         return;
       }
       const icon = allIcons[data.weather[0].icon] || clear_icon;
+      
+      
       setWeatherData({
         humidity:data.main.humidity,
         windSpeed:data.wind.speed,
         temperature:Math.floor(data.main.temp),
         location:data.name,
-        icon:icon
+        icon:icon,
+        timezone:data.timezone,
+        // sunrise:sunRiseDate,
+        // sunset:subSetDate,
       });
+      console.log(WeatherData);
+          
     } catch (error) {
       setWeatherData(false)
       console.log(error);
@@ -85,7 +99,7 @@ const Weather = () => {
                   <span>Wind</span>
                 </div>
             </div>
-          </div>
+          </div>          
         </>:<>
         </>}
     </div>
